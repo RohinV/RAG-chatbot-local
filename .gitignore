@@ -1,0 +1,82 @@
+# ========================
+# Python cache + artifacts
+# ========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+
+# ========================
+# Conda Environments
+# ========================
+# Local conda envs created inside the project folder
+env/
+venv/
+conda-env/
+*.conda
+*.yaml
+
+# Special case: If you created your env inside the project (common mistake)
+# Ex: C:\Users\...\rag_chatbot\langchain1
+langchain1/
+
+# Do NOT ignore the environment.yml (exported env file)
+!environment.yml
+
+# ========================
+# Streamlit
+# ========================
+.streamlit/
+
+# ========================
+# FAISS Index Files
+# ========================
+faiss_store/
+faiss_index/
+*.faiss
+*.pkl
+
+# ========================
+# Document Uploads
+# ========================
+docs/
+uploads/
+DOCS_DIR/
+
+# ========================
+# Ollama / Model Cache (optional)
+# ========================
+.ollama/
+
+# ========================
+# Logs
+# ========================
+*.log
+
+# ========================
+# Jupyter / IPython
+# ========================
+.ipynb_checkpoints/
+
+# ========================
+# OS-specific junk files
+# ========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ========================
+# Python build dirs
+# ========================
+build/
+dist/
+*.egg-info/
+
+# ========================
+# IDE / Editor folders
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo

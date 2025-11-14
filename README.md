@@ -1,198 +1,192 @@
-🤖 RAG Chatbot — Local Document Q&A with FAISS + Ollama
+# 🤖 RAG Chatbot — Local Document Q&A with FAISS + Ollama
 
-A fully local Retrieval-Augmented Generation (RAG) chatbot that allows you to upload documents (PDF, TXT, MD), embed them using Ollama embeddings, index them with FAISS, and query them through a local open-source LLM such as:
+A fully local **Retrieval-Augmented Generation (RAG)** chatbot that lets you upload documents (PDF, TXT, MD), embed them using **Ollama embeddings**, index them with **FAISS**, and ask questions using local open-source LLMs like:
 
-DeepSeek R1
+- DeepSeek R1
+- LLaMA 3
+- Qwen 3
+- Mistral 7B
 
-LLaMA 3
+Everything runs locally — no external APIs.
 
-Qwen 3
+---
 
-Mistral 7B
+## 🚀 Features
 
-All models run locally through Ollama, with no external API calls.
+### 🔍 Document-Aware Q&A
+Ask questions based on your own uploaded documents.
 
-🚀 Features
-🔍 Document-Aware Q&A
+### 📚 Local Vector Search
+High-performance similarity search powered by **FAISS**.
 
-Ask questions directly about your PDFs, notes, and text documents.
+### 🧠 Local LLM Inference
+Uses Ollama to run all AI models locally.
 
-📚 Local Vector Search
+### 🧩 Model Switching
+Choose from multiple models:
+- `deepseek-r1:8b`
+- `llama3:latest`
+- `qwen3:8b`
+- `mistral:7b`
 
-Uses FAISS for high-performance similarity search.
+### 🧷 Intelligent RAG Prompting
+- Avoids hallucination  
+- Adds LLM general knowledge when needed  
+- Clearly states when info is *not* from documents  
+- Clear but not overly verbose answers  
 
-🧠 Local LLM Inference
+### 🗂️ Document Upload & Memory
+Upload PDFs/TXT/MD and chat with them persistently.
 
-Runs fully offline with Ollama + open-source models.
+### 🖥️ Streamlit UI
+Clean and user-friendly interface.
 
-🧩 Model Switching
+---
 
-Choose your preferred LLM:
+## 📦 Project Structure
 
-deepseek-r1:8b
-
-llama3:latest
-
-qwen3:8b
-
-mistral:7b
-
-🧷 Context-Aware Prompting
-
-The RAG prompt ensures:
-
-No hallucination
-
-Answers clearly distinguish between document-based facts and LLM prior knowledge
-
-Answers are clear but not overly verbose
-
-Model acknowledges when info is not from documents
-
-🗂️ Document Memory
-
-The app keeps track of your previous questions and responses.
-
-🖥️ Streamlit UI
-
-User-friendly interface for uploading files and chatting.
-
-⚡ Fully Local & Open Source
-
-No network use.
-No API fees.
-All modules open-source.
-
-📦 Project Structure
+```
 rag_chatbot/
-│── app.py                 # Streamlit UI
-│── rag.py                 # RAG pipeline (LLM + retriever + prompt)
-│── ingest.py              # Builds FAISS index from documents
-│── config.py              # Paths and model config
-│── requirements.txt       # pip dependencies
-│── environment.yml        # Conda environment (optional)
-│── README.md              # You are here
-│── docs/                  # Uploaded user documents
-│── faiss_store/           # Saved FAISS index
+│── app.py                # Streamlit UI
+│── rag.py                # RAG pipeline: LLM + retriever + prompt
+│── ingest.py             # Document ingestion & FAISS index creation
+│── config.py             # Paths and model configuration
+│── requirements.txt      # Python dependencies
+│── environment.yml       # Conda environment file
+│── faiss_store/          # Local FAISS index
+│── docs/                 # Uploaded documents
+│── README.md
 │── .gitignore
+```
 
-🛠️ Installation
-1️⃣ Install Conda Environment (Recommended)
+---
 
-Create your environment:
+## 🛠️ Installation
 
+### 1️⃣ Create Conda Environment
+
+```bash
 conda env create -f environment.yml
 conda activate rag_chatbot
+```
 
+Or install via pip:
 
-Or generate it manually:
-
-conda create -n rag_chatbot python=3.10
-conda activate rag_chatbot
+```bash
 pip install -r requirements.txt
+```
 
-2️⃣ Install Ollama
+---
 
-Download and install Ollama:
+## 2️⃣ Install Ollama
 
-👉 https://ollama.com/download
+Download Ollama:
+
+https://ollama.com/download
 
 Then pull the models you want:
 
+```bash
 ollama pull deepseek-r1:8b
 ollama pull llama3
 ollama pull qwen3:8b
 ollama pull mistral:7b
+```
 
-📥 Ingest Documents
+---
 
-Place your PDFs/TXT/MD into the docs/ folder
-OR upload them through the Streamlit sidebar.
+## 📥 Ingest Documents
+
+Place your documents in the `docs/` folder or upload them in the Streamlit sidebar.
 
 Then run:
 
+```bash
 python ingest.py
-
+```
 
 This will:
+- Load documents  
+- Split into text chunks  
+- Create embeddings  
+- Build a FAISS index  
 
-Load your documents
+---
 
-Chunk text
+## 💬 Run the Chatbot
 
-Generate embeddings
-
-Build a local FAISS index
-
-💬 Run the Chatbot UI
-
-Start Streamlit:
-
+```bash
 streamlit run app.py
+```
 
+Open:
 
-Then open:
+```
+http://localhost:8501
+```
 
-👉 http://localhost:8501
+---
 
-🧠 How It Works (RAG Pipeline)
-1. Document Loading
+## 🧠 How It Works (RAG Pipeline)
 
-PDFs → text via PyPDFLoader
-TXT/MD → loaded directly
+1. Load documents (PDF/TXT/MD)  
+2. Split text using recursive chunking  
+3. Generate embeddings using Ollama  
+4. Store embeddings in FAISS  
+5. Retrieve relevant chunks  
+6. Pass chunks + question into your selected LLM  
+7. LLM answers while distinguishing:
+   - Document-based info  
+   - General knowledge  
 
-2. Text Chunking
+---
 
-Using RecursiveCharacterTextSplitter (LangChain v1).
+## 🧪 Example Q&A
 
-3. Embeddings
+**Q:**  
+*What is Adam optimization?*
 
-Generated via OllamaEmbeddings(model="nomic-embed-text") (or your chosen embed model).
+**A:**  
+Adam is a stochastic gradient optimization method that combines ideas from AdaGrad and RMSProp.  
+*(This information was found in your documents.)*
 
-4. Vector Index
+Additionally, based on general LLM knowledge, Adam is widely used in neural network training due to adaptive learning rates.  
+*(This part is not from your documents.)*
 
-Stored locally using FAISS.
+---
 
-5. Query Flow
+## 🛠️ Troubleshooting
 
-User Question → Embedding → FAISS Retrieval → Prompt → LLM → Final Answer
-
-🧪 Example Query
-Q:
-
-“What is Adam optimization?”
-
-A:
-Adam is a stochastic gradient-based optimization method that blends ideas from
-AdaGrad and RMSProp. This information was found in your uploaded documents.
-Additionally, based on general LLM knowledge (not in your documents), Adam is 
-widely used due to its adaptive learning rate and momentum.
-
-🛠️ Troubleshooting
-❌ FAISS index not found
-
+### ❌ FAISS index not found
 Run:
-
+```bash
 python ingest.py
+```
 
-❌ Model not found
-
-Pull it with Ollama:
-
+### ❌ Model not found
+Pull the model:
+```bash
 ollama pull deepseek-r1:8b
+```
 
-❌ Streamlit fails to load
-
-Close all terminals and restart:
-
+### ❌ Streamlit not updating
+Restart:
+```bash
 streamlit run app.py
+```
 
-❌ “I don't know based on your documents” too often
+---
 
-Increase retrieval depth in rag.py:
+## 🧾 License
+This project is open-source and free to use or modify.
 
-search_kwargs={"k": 8, "fetch_k": 16}
+---
 
-🧾 License
+## ⭐ Optional Enhancements
+- Chat history saving  
+- Dockerfile  
+- Hybrid search (FAISS + BM25)  
+- GPU acceleration  
+- UI redesign  
+- Conversation memory
 
-This project is fully open-source and free to use or modify.
